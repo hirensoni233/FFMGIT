@@ -48,11 +48,17 @@ app.post("/make-video", cpUpload, async (req, res) => {
       }
 
       res.setHeader("Content-Type", "video/mp4");
-      res.sendFile(outputPath, () => {
-        fs.unlinkSync(audioPath);
-        fs.unlinkSync(imagePath);
-        fs.unlinkSync(outputPath);
-      });
+res.setHeader(
+  "Content-Disposition",
+  `attachment; filename="output-${Date.now()}.mp4"`
+);
+
+res.sendFile(outputPath, () => {
+  fs.unlinkSync(audioPath);
+  fs.unlinkSync(imagePath);
+  fs.unlinkSync(outputPath);
+});
+
     });
 
   } catch (error) {
