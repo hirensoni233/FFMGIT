@@ -37,13 +37,15 @@ app.post("/make-video", cpUpload, async (req, res) => {
 
     // 🎬 FFMPEG COMMAND
     const cmd = `
-      ffmpeg -y \
-      -loop 1 -i ${imagePath} \
-      -i ${audioPath} \
-      -c:v libx264 -tune stillimage \
-      -c:a aac -b:a 192k \
-      -shortest ${outputPath}
-    `;
+  ffmpeg -y \
+  -loop 1 -framerate 1 -i "${imagePath}" \
+  -i "${audioPath}" \
+  -c:v libx264 -preset veryfast \
+  -c:a aac -b:a 128k \
+  -pix_fmt yuv420p \
+  -shortest \
+  "${outputPath}"
+`;
 
     exec(cmd, (err) => {
       if (err) {
